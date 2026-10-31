@@ -11,7 +11,11 @@
             --surface-border: #21262d;
             --text-main: #c9d1d9;
             --text-muted: #8b949e;
-            --accent: #58a6ff;
+            
+            /* Link Colors */
+            --link-blue: #58a6ff;
+            --link-yellow: #e3b341;
+            
             --topbar-height: 56px;
             --sidebar-width: 260px;
         }
@@ -28,8 +32,24 @@
         .sidebar-section { margin-bottom: 24px; }
         .sidebar-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); padding: 0 12px 8px; }
         .sidebar-menu { list-style: none; }
-        .sidebar-menu li a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--text-main); text-decoration: none; border-radius: 6px; font-size: 0.9rem; cursor: pointer; transition: background-color 0.2s, color 0.2s; }
-        .sidebar-menu li a:hover, .sidebar-menu li.active a { background-color: rgba(88, 166, 255, 0.1); color: var(--accent); }
+        
+        /* Base Sidebar Link Styles */
+        .sidebar-menu li a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; text-decoration: none; border-radius: 6px; font-size: 0.9rem; cursor: pointer; transition: background-color 0.2s, color 0.2s; }
+
+        /* External Link (Blue) */
+        .sidebar-menu li a.external-link { color: var(--link-blue); }
+        .sidebar-menu li a.external-link:hover { background-color: rgba(88, 166, 255, 0.1); color: #79c0ff; }
+
+        /* Internal View Links (Yellow) */
+        .sidebar-menu li a.internal-link { color: var(--link-yellow); }
+        .sidebar-menu li a.internal-link:hover { background-color: rgba(227, 179, 65, 0.1); color: #f1e05a; }
+        
+        /* Active Internal Link State */
+        .sidebar-menu li.active a.internal-link {
+            background-color: rgba(227, 179, 65, 0.15);
+            color: #f1e05a;
+            font-weight: 500;
+        }
 
         .main-content { margin-left: var(--sidebar-width); flex: 1; padding: 40px; max-width: 900px; }
         
@@ -42,7 +62,7 @@
         
         /* Card Styling */
         .card { background-color: var(--surface-color); border: 1px solid var(--surface-border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-        .changelog-version { font-size: 1.1rem; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+        .changelog-version { font-size: 1.1rem; font-weight: 600; color: var(--link-yellow); margin-bottom: 6px; }
         .changelog-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
         .changelog-list { padding-left: 20px; color: var(--text-main); }
         .changelog-list li { margin-bottom: 6px; }
@@ -60,17 +80,16 @@
             <div class="sidebar-section">
                 <div class="sidebar-title">General</div>
                 <ul class="sidebar-menu">
-                    <!-- Points straight to the root organization URL -->
-                    <link-home id="menu-home">
-                        <a href="https://kodyris-blackforge.github.io/">Home Portal</a>
-                    </link-home>
+                    <!-- External Link -> Blue -->
+                    <li><a href="https://kodyris-blackforge.github.io/" class="external-link">Home Portal</a></li>
                 </ul>
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-title">Projects</div>
                 <ul class="sidebar-menu">
-                    <li id="menu-bot"><a href="#bot" onclick="navigateTo('bot')">Community Bot</a></li>
-                    <li id="menu-changelog"><a href="#changelog" onclick="navigateTo('changelog')">Changelog</a></li>
+                    <!-- Internal View Links -> Yellow -->
+                    <li id="menu-bot"><a href="#bot" onclick="navigateTo('bot')" class="internal-link">Community Bot</a></li>
+                    <li id="menu-changelog"><a href="#changelog" onclick="navigateTo('changelog')" class="internal-link">Changelog</a></li>
                 </ul>
             </div>
         </nav>
@@ -124,4 +143,26 @@
             }
             
             // Update active states on sidebar menus
-            document.querySelectorAll('.sidebar-menu li, .sidebar-menu link-home').forEach(el => el.classList.remove
+            document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+            const targetMenu = document.getElementById('menu-' + pageId);
+            if (targetMenu) {
+                targetMenu.classList.add('active');
+            }
+        }
+
+        // Handle URL hash routing on load and history changes
+        function handleRoute() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash === 'changelog') {
+                navigateTo('changelog');
+            } else {
+                navigateTo('bot');
+            }
+        }
+
+        window.addEventListener('hashchange', handleRoute);
+        window.addEventListener('DOMContentLoaded', handleRoute);
+    </script>
+
+</body>
+</html>
