@@ -1,13 +1,221 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kodyris-Blackforge Portal</title>
+    <style>
+        :root {
+            --bg-color: #0f1115;
+            --surface-color: #161920;
+            --surface-border: #21262d;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --topbar-height: 56px;
+            --sidebar-width: 260px;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Top Bar --- */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--topbar-height);
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--surface-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+        }
+
+        .topbar-brand {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .topbar-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .topbar-links a:hover {
+            color: var(--accent);
+        }
+
+        /* --- Layout Container --- */
+        .app-container {
+            display: flex;
+            margin-top: var(--topbar-height);
+            flex: 1;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--surface-color);
+            border-right: 1px solid var(--surface-border);
+            padding: 20px 10px;
+            position: fixed;
+            top: var(--topbar-height);
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            padding: 0 12px 8px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: rgba(255, 255, 255, 0.04);
+            color: var(--accent);
+        }
+
+        .sidebar-menu li.active a {
+            background-color: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 40px;
+            max-width: 1000px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Responsive layout for smaller screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none; /* Can be enhanced with a mobile toggle if needed */
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <h1>Template</h1>
-  
-  <p>This is a blank template for a web page.</p>
-  
+    <!-- Top Navigation Bar -->
+    <header class="topbar">
+        <div class="topbar-brand">
+            <span>⚡</span> Kodyris-Blackforge
+        </div>
+        <ul class="topbar-links">
+            <li><a href="https://github.com/Kodyris-Blackforge" target="_blank">Organization GitHub</a></li>
+            <li><a href="#">Docs</a></li>
+        </ul>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">Overview</div>
+                <ul class="sidebar-menu">
+                    <li class="active"><a href="#">Home Portal</a></li>
+                    <li><a href="#">Projects</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-title">Repositories</div>
+                <ul class="sidebar-menu">
+                    <li><a href="#">ModDataPacks</a></li>
+                    <li><a href="#">Charged Synergy</a></li>
+                    <li><a href="#">Falcon Engine</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <h1>Welcome to Blackforge</h1>
+            <p>Central repository documentation and project hubs hosted via GitHub Pages.</p>
+            
+            <div class="card">
+                <h3>Quick Status</h3>
+                <p>Pages are deployed and active under the <code>Kodyris-Blackforge</code> organization umbrella.</p>
+            </div>
+        </main>
+    </div>
+
 </body>
 </html>
