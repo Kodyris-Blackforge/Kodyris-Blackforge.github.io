@@ -40,8 +40,8 @@
         h1 { font-size: 1.8rem; margin-bottom: 12px; }
         p { color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
         
-        /* Changelog Styling */
-        .changelog-entry { background-color: var(--surface-color); border: 1px solid var(--surface-border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        /* Changelog & Card Styling */
+        .card { background-color: var(--surface-color); border: 1px solid var(--surface-border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
         .changelog-version { font-size: 1.1rem; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
         .changelog-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
         .changelog-list { padding-left: 20px; color: var(--text-main); }
@@ -51,7 +51,7 @@
 <body>
 
     <header class="topbar">
-        <div class="topbar-brand">⚡ Kodyris Blackforge</div>
+        <div class="topbar-brand">⚡ Kodyris-Blackforge</div>
     </header>
 
     <div class="app-container">
@@ -60,14 +60,14 @@
             <div class="sidebar-section">
                 <div class="sidebar-title">General</div>
                 <ul class="sidebar-menu">
-                    <li class="active" onclick="switchPage('home', this)"><a>Home Portal</a></li>
+                    <li id="menu-home"><a href="#home" onclick="navigateTo('home')">Home Portal</a></li>
                 </ul>
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-title">Projects</div>
                 <ul class="sidebar-menu">
-                    <li onclick="switchPage('bot', this)"><a>Community Bot</a></li>
-                    <li onclick="switchPage('changelog', this)"><a>Changelog</a></li>
+                    <li id="menu-bot"><a href="#bot" onclick="navigateTo('bot')">Community Bot</a></li>
+                    <li id="menu-changelog"><a href="#changelog" onclick="navigateTo('changelog')">Changelog</a></li>
                 </ul>
             </div>
         </nav>
@@ -76,20 +76,27 @@
         <main class="main-content">
             
             <!-- HOME PAGE -->
-            <div id="page-home" class="page-view active">
+            <div id="page-home" class="page-view">
                 <h1>Welcome to Blackforge</h1>
                 <p>Central hub for system utilities, automation scripts, and custom server infrastructure.</p>
+                <div class="card">
+                    <h3>Quick Links</h3>
+                    <p>Select a project from the sidebar to inspect component architecture and feature specs.</p>
+                </div>
             </div>
 
             <!-- COMMUNITY BOT PAGE -->
             <div id="page-bot" class="page-view">
                 <h1>Community Management Bot</h1>
-                <p>A bot to manage community ages, ban syncing, and more.</p>
-                <div class="changelog-entry">
+                <p>An automated integration utility designed for server moderation, tracking events, and executing asynchronous commands.</p>
+                
+                <div class="card">
                     <h3>Core Features</h3>
                     <br>
                     <ul class="changelog-list">
-                        <li>Community Age Verification</li>
+                        <li>Dynamic ES module loading architecture with TTL caching</li>
+                        <li>Automated Roblox Open Cloud API and webhook hooks</li>
+                        <li>Zero-downtime background sync loops and command routing wrappers</li>
                     </ul>
                 </div>
             </div>
@@ -98,14 +105,14 @@
             <div id="page-changelog" class="page-view">
                 <h1>Project Changelog</h1>
                 <p>Track recent updates, version patches, and repository changes.</p>
-
-                <div class="changelog-entry">
-                    <div class="changelog-version">v0.0.1 (Whitelisted only build)</div>
+                
+                <div class="card">
+                    <div class="changelog-version">v1.2.0 - Modular Refactor</div>
                     <div class="changelog-date">Released: October 2026</div>
                     <ul class="changelog-list">
-                        <li>Begun building out infra for Bot Login</li>
-                        <li>(ASSISTED) Built infrastructure for whitelisting</li>
-                        <li>Begun building out infra for community age requirements</li>
+                        <li>Migrated core bot routines to dynamic ES module importing.</li>
+                        <li>Optimized event-driven loop execution times.</li>
+                        <li>Fixed state synchronization bugs across background workers.</li>
                     </ul>
                 </div>
             </div>
@@ -114,16 +121,38 @@
     </div>
 
     <script>
-        function switchPage(pageId, element) {
+        function navigateTo(pageId) {
             // Hide all pages
             document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
             // Show target page
-            document.getElementById('page-' + pageId).classList.add('active');
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
             
-            // Update active styles on sidebar
+            // Update active states on sidebar menus
             document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
-            element.classList.add('active');
+            const targetMenu = document.getElementById('menu-' + pageId);
+            if (targetMenu) {
+                targetMenu.classList.add('active');
+            }
         }
+
+        // Handle URL hash routing on load and history changes (back/forward buttons)
+        function handleRoute() {
+            const hash = window.location.hash.replace('#', '');
+            // Default to 'bot' if no hash is present or if hash is empty
+            if (hash === 'home' || hash === 'changelog') {
+                navigateTo(hash);
+            } else {
+                navigateTo('bot');
+            }
+        }
+
+        window.addEventListener('hashchange', handleRoute);
+        
+        // Run router on initial page load (defaults straight to Community Bot)
+        window.addEventListener('DOMContentLoaded', handleRoute);
     </script>
 
 </body>
