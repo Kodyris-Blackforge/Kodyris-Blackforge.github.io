@@ -40,7 +40,7 @@
         h1 { font-size: 1.8rem; margin-bottom: 12px; }
         p { color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
         
-        /* Changelog & Card Styling */
+        /* Card Styling */
         .card { background-color: var(--surface-color); border: 1px solid var(--surface-border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
         .changelog-version { font-size: 1.1rem; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
         .changelog-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
@@ -60,7 +60,10 @@
             <div class="sidebar-section">
                 <div class="sidebar-title">General</div>
                 <ul class="sidebar-menu">
-                    <li id="menu-home"><a href="#home" onclick="navigateTo('home')">Home Portal</a></li>
+                    <!-- Points straight to the root organization URL -->
+                    <link-home id="menu-home">
+                        <a href="https://kodyris-blackforge.github.io/">Home Portal</a>
+                    </link-home>
                 </ul>
             </div>
             <div class="sidebar-section">
@@ -75,17 +78,7 @@
         <!-- Main Content Views -->
         <main class="main-content">
             
-            <!-- HOME PAGE -->
-            <div id="page-home" class="page-view">
-                <h1>Welcome to Blackforge</h1>
-                <p>Central hub for system utilities, automation scripts, and custom server infrastructure.</p>
-                <div class="card">
-                    <h3>Quick Links</h3>
-                    <p>Select a project from the sidebar to inspect component architecture and feature specs.</p>
-                </div>
-            </div>
-
-            <!-- COMMUNITY BOT PAGE -->
+            <!-- COMMUNITY BOT PAGE (Default View) -->
             <div id="page-bot" class="page-view">
                 <h1>Community Management Bot</h1>
                 <p>An automated integration utility designed for server moderation, tracking events, and executing asynchronous commands.</p>
@@ -131,29 +124,4 @@
             }
             
             // Update active states on sidebar menus
-            document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
-            const targetMenu = document.getElementById('menu-' + pageId);
-            if (targetMenu) {
-                targetMenu.classList.add('active');
-            }
-        }
-
-        // Handle URL hash routing on load and history changes (back/forward buttons)
-        function handleRoute() {
-            const hash = window.location.hash.replace('#', '');
-            // Default to 'bot' if no hash is present or if hash is empty
-            if (hash === 'home' || hash === 'changelog') {
-                navigateTo(hash);
-            } else {
-                navigateTo('bot');
-            }
-        }
-
-        window.addEventListener('hashchange', handleRoute);
-        
-        // Run router on initial page load (defaults straight to Community Bot)
-        window.addEventListener('DOMContentLoaded', handleRoute);
-    </script>
-
-</body>
-</html>
+            document.querySelectorAll('.sidebar-menu li, .sidebar-menu link-home').forEach(el => el.classList.remove
